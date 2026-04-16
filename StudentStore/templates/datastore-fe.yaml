@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+namespace: {{.Values.StudentStoreFrontend.StudentDeploy.namespace}}
+{{- with .Values.StudentStoreFrontend.StudentDeploy}}
+metadata:
+  name: datastore-frontend
+  labels:
+    type: frontend
+spec:
+  template:
+    metadata:
+      name: datastore-frontend
+      labels:
+        type: frontend
+    spec:
+      containers:
+        - name: mywebapp
+          image: 8072388539/datastore-frontend:{{.image}}
+          env:
+            - name: API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: datastore-fe-cm
+                  key: backendEndpoint
+          resources:
+           {{.resources}}
+          livenessProbe:
+              {{.livenessProbe}}
+          readinessProbe:
+            {{.readinessProbe}}
+          startupProbe:
+           {{.startupProbe}}
+  replicas: {{.replicaCount}}
+  selector:
+    matchLabels:
+      type: frontend
+
+---
+
+apiVersion: v1
+kind: Service
+namespace: {{.Values.StudentStoreFrontend.StudentSvc.namespace}}  
+metadata:
+  name: datastore-frontend-svc
+spec:
+  ports:
+    - port: {{.Values.StudentStoreFrontend.StudentSvc.svcPort}}
+      targetPort: 8080
+  selector:
+    type: frontend
+{{-end}}

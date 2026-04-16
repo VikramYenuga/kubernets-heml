@@ -1,0 +1,4 @@
+apiVersion: v1
+kind: studentStoreFrontend
+description: This is the student store frontend chat application
+version: 1.0.0
