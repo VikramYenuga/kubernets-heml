@@ -1,6 +1,0 @@
-apiVersion: v2
-name: studentstore
-description: A Helm chart for Kubernetes to deploy StudentStore Frontend and Backend applications
-type: application
-version: 0.0.1
-appVersion: "1.0.0"

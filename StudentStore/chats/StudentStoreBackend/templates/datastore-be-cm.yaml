@@ -1,7 +1,0 @@
-kind: ConfigMap
-metadata:
-  name: datastore-be-cm
-  namespace: {{ .Values.StudentSvc.namespace }}
-data:
-  mysqlHost: {{ .Values.StudentCm.mysqlHost | quote }}
-  mysqlUname: {{ .Values.StudentCm.name | quote }}

@@ -1,5 +1,0 @@
-apiVersion: v2
-type: application
-name: StudentStoreBackend
-description: A Helm chart for StudentStoreBackend
-version: 0.0.1

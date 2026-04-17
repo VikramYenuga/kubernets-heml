@@ -1,0 +1,6 @@
+dependencies:
+- name: StudentStoreBackend
+  repository: file://charts/StudentStoreBackend
+  version: 1.0.0
+digest: sha256:2339bd8c9dfc3cf73a5262d0c56ae1d5ff8ffc14c6b6ebb21fe0f1632d5e74fe
+generated: "2026-04-17T15:51:22.33724887Z"
