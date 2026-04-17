@@ -1,12 +1,16 @@
+{{- with .Values.StudentStoreFrontend.studentFeDeploy }}
 apiVersion: apps/v1
 kind: Deployment
-namespace: {{.Values.StudentStoreFrontend.StudentDeploy.namespace}}
-{{- with .Values.StudentStoreFrontend.StudentDeploy}}
 metadata:
   name: datastore-frontend
+  namespace: {{ .namespace }}
   labels:
     type: frontend
 spec:
+  replicas: {{ .replicaCount }}
+  selector:
+    matchLabels:
+      type: frontend
   template:
     metadata:
       name: datastore-frontend
@@ -15,7 +19,9 @@ spec:
     spec:
       containers:
         - name: mywebapp
-          image: 8072388539/datastore-frontend:{{.image}}
+          image: 8072388539/datastore-frontend:{{ .imgTag }}
+          ports:
+            - containerPort: 8080
           env:
             - name: API_URL
               valueFrom:
@@ -23,29 +29,26 @@ spec:
                   name: datastore-fe-cm
                   key: backendEndpoint
           resources:
-           {{.resources}}
+{{ toYaml .containerResources | indent 12 }}
           livenessProbe:
-              {{.livenessProbe}}
+{{ toYaml .livenessProbe | indent 12 }}
           readinessProbe:
-            {{.readinessProbe}}
+{{ toYaml .readinessProbe | indent 12 }}
           startupProbe:
-           {{.startupProbe}}
-  replicas: {{.replicaCount}}
-  selector:
-    matchLabels:
-      type: frontend
+{{ toYaml .startupProbe | indent 12 }}
+{{- end }}
 
 ---
 
 apiVersion: v1
 kind: Service
-namespace: {{.Values.StudentStoreFrontend.StudentSvc.namespace}}  
 metadata:
   name: datastore-frontend-svc
+  namespace: {{ .Values.studentSvc.namespace }}
 spec:
+  type: ClusterIP
   ports:
-    - port: {{.Values.StudentStoreFrontend.StudentSvc.svcPort}}
+    - port: {{ .Values.studentSvc.svcPort }}
       targetPort: 8080
   selector:
     type: frontend
-{{-end}}
